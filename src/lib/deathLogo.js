@@ -21,6 +21,9 @@ const HALF_PI = Math.PI / 2
  * - density: multiplier for how many thorns, spikes, side thorns and arches grow.
  * - curliness: multiplier for how much thorns bend and hook (horns keep theirs).
  * - carve: inward thorns cut into each letter.
+ *
+ * @param {import('@/types').LogoOptions} options
+ * @returns {import('@/types').Sketch}
  */
 export function createDeathLogo ({
   lines = ['Logo'],

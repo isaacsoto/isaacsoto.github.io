@@ -1,13 +1,13 @@
-<script setup>
+<script setup lang="ts">
   import { mdiChevronDown } from '@mdi/js'
   import { useDisplay } from 'vuetify'
   import AshField from '@/components/AshField.vue'
   import DeathLogo from '@/components/DeathLogo.vue'
-  import SketchCard from '@/components/SketchCard.vue'
   import StageStrip from '@/components/StageStrip.vue'
   import TourDates from '@/components/TourDates.vue'
+  import WorkCard from '@/components/WorkCard.vue'
   import { profile } from '@/data/profile'
-  import { sketches } from '@/sketches'
+  import { works } from '@/data/works'
   import { stacked, wide } from '@/sketches/wordmark'
 
   const { xs } = useDisplay()
@@ -66,13 +66,13 @@
 
         <v-row>
           <v-col
-            v-for="sketch in sketches"
-            :key="sketch.id"
+            v-for="work in works"
+            :key="work.id"
             cols="12"
             lg="4"
             md="6"
           >
-            <SketchCard :sketch="sketch" />
+            <WorkCard :work="work" />
           </v-col>
         </v-row>
       </v-container>

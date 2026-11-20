@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
   import { ref } from 'vue'
   import ash from '@/background/ash'
   import { useSketch } from '@/composables/useSketch'
 
-  const canvas = ref()
+  const canvas = ref<HTMLCanvasElement>()
   useSketch(canvas, ash)
 </script>
 

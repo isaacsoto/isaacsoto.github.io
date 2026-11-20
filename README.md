@@ -27,6 +27,27 @@ export default {
 `s` holds `width`, `height`, `time`, `dt`, `frame`, `mouse { x, y, inside }`, plus anything you store on it.
 Sketches pause when off screen and respect `prefers-reduced-motion`.
 
+## Adding a project (image or video)
+
+Put the file in `public/works/` and add an entry to `projects` in `src/data/works.js`:
+
+```js
+{
+  title: 'Softube Central',
+  description: 'Lead dev on the full rewrite of the app.',
+  tags: ['vue', 'ux'],
+  media: 'video',                       // or 'image'
+  src: 'works/softube-central.mp4',
+  poster: 'works/softube-central.jpg',  // optional, video only
+  link: { href: 'https://…', label: 'Case study' }, // optional
+  order: 1,
+}
+```
+
+Projects and sketches share one grid, sorted by `order`. Files in `public/` are copied next to
+`index.html` instead of being inlined, so videos don't bloat the page. Videos play muted and looped
+while on screen, and show controls instead of autoplaying for reduced-motion users.
+
 ## Where things live
 
 - `src/data/profile.js` – name, bio, tools, links, tour history

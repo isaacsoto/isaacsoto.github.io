@@ -1,16 +1,17 @@
+import type { Profile } from '@/types'
 import { mdiEmailOutline, mdiGithub, mdiInstagram } from '@mdi/js'
 import gdLogo from '@/assets/logos/giesecke-devrient-wordmark.svg?raw'
 import microsoftLogo from '@/assets/logos/microsoft.svg?raw'
 import softubeLogo from '@/assets/logos/softube-wordmark.svg?raw'
 
-export const profile = {
+export const profile: Profile = {
   name: 'Izzy Sorrow',
   handle: 'isaacsoto',
   tagline: 'Extended range developer',
   about: [
     'I write code that makes images, motion and noise. Algorithms tuned low, drop-tuned and distorted.',
   ],
-  tools: ['Tyescript', 'Vue', 'Angular', 'p5.js', 'Playwright', 'JUCE'],
+  tools: ['Typescript', 'Vue', 'Angular', 'p5.js', 'Playwright', 'C++', 'JUCE', 'Java', 'Processing'],
   // Logos are single-colour SVGs (fill="currentColor"), tinted by CSS.
   // stageScale balances their visual size in the "Shared the stage with" strip.
   // TODO: replace the placeholder years and cities, set `current: true` on an ongoing job.
@@ -47,8 +48,8 @@ export const profile = {
     },
   ],
   links: [
-    { label: 'GitHub', href: 'https://github.com/yourhandle', icon: mdiGithub },
-    { label: 'Instagram', href: 'https://instagram.com/yourhandle', icon: mdiInstagram },
-    { label: 'Email', href: 'mailto:you@example.com', icon: mdiEmailOutline },
+    { label: 'GitHub', href: 'https://github.com/isaacsoto', icon: mdiGithub },
+    // { label: 'Instagram', href: 'https://instagram.com/yourhandle', icon: mdiInstagram },
+    // { label: 'Email', href: 'mailto:you@example.com', icon: mdiEmailOutline },
   ],
 }

@@ -1,7 +1,9 @@
-<script setup>
-  defineProps({
-    acts: { type: Array, required: true },
-  })
+<script setup lang="ts">
+  import type { Experience } from '@/types'
+
+  defineProps<{
+    acts: Experience[]
+  }>()
 </script>
 
 <template>

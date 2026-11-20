@@ -1,15 +1,17 @@
-<script setup>
+<script setup lang="ts">
+  import type { LogoOptions } from '@/types'
   import { ref } from 'vue'
   import { useSketch } from '@/composables/useSketch'
   import { createDeathLogo } from '@/lib/deathLogo'
 
-  // `options` are passed straight to createDeathLogo, see lib/deathLogo.js
-  const props = defineProps({
-    options: { type: Object, required: true },
-    aspect: { type: Number, default: 1.9 },
+  const props = withDefaults(defineProps<{
+    options: LogoOptions
+    aspect?: number
+  }>(), {
+    aspect: 1.9,
   })
 
-  const canvas = ref()
+  const canvas = ref<HTMLCanvasElement>()
   useSketch(canvas, createDeathLogo(props.options))
 </script>
 

@@ -1,7 +1,9 @@
-<script setup>
-  defineProps({
-    dates: { type: Array, required: true },
-  })
+<script setup lang="ts">
+  import type { Experience } from '@/types'
+
+  defineProps<{
+    dates: Experience[]
+  }>()
 </script>
 
 <template>
