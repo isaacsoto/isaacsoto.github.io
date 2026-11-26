@@ -59,7 +59,7 @@ while on screen, and show controls instead of autoplaying for reduced-motion use
 ## Deploy
 
 `.github/workflows/deploy.yml` lints and builds every branch and pull request, and attaches the
-built page as the `portfolio-preview` artifact. Pushes to `main` (or a manual run on `main`) also
+built page as the `portfolio-preview` artifact. Pushes to `master` (or a manual run on `master`) also
 deploy it to GitHub Pages.
 
 One-time setup in the repo: **Settings → Pages → Source: GitHub Actions**.

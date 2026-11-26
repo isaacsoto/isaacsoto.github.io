@@ -1,5 +1,5 @@
 # Every branch and PR: lint + build, with the page attached as a download.
-# Only main (push or manual run) deploys to GitHub Pages.
+# Only master (push or manual run) deploys to GitHub Pages.
 name: Build and deploy
 
 on:
@@ -37,14 +37,14 @@ jobs:
           retention-days: 14
 
       - name: Upload Pages artifact
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       pages: write
