@@ -24,5 +24,5 @@ const projects: Project[] = []
 
 export const works: Work[] = [
   ...projects.map((project, i) => ({ ...project, id: `project-${i}` })),
-  ...sketches.map(sketch => ({ ...sketch, media: 'sketch' as const, sketch })),
+  ...sketches.filter(sketch => !sketch.hidden).map(sketch => ({ ...sketch, media: 'sketch' as const, sketch })),
 ].toSorted((a, b) => (a.order ?? 0) - (b.order ?? 0))

@@ -21,6 +21,8 @@ export interface SketchModule extends Sketch {
   description: string
   tags: string[]
   order?: number
+  /** Left out of Works, e.g. while it is used elsewhere */
+  hidden?: boolean
 }
 
 interface WorkBase {
@@ -82,6 +84,8 @@ export interface LogoOptions {
   carve?: number
   density?: number
   curliness?: number
+  /** 'shaped' (default): curved, slim, branching thorns; 'hair': the older ribbon thorns */
+  thornStyle?: 'shaped' | 'hair'
   seed?: number
   regrow?: number
 }

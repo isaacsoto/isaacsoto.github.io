@@ -1,4 +1,5 @@
 import { createRandom } from '@/lib/random'
+import { growThorns } from '@/lib/thorns'
 
 const INK = '#d8d2cc'
 const STEPS_PER_FRAME = 4
@@ -21,6 +22,8 @@ const HALF_PI = Math.PI / 2
  * - density: multiplier for how many thorns, spikes, side thorns and arches grow.
  * - curliness: multiplier for how much thorns bend and hook (horns keep theirs).
  * - carve: inward thorns cut into each letter.
+ * - thornStyle: 'shaped' grows curved, slim, branching thorns (see lib/thorns.js);
+ *   'hair' keeps the older thin ribbon thorns.
  *
  * @param {import('@/types').LogoOptions} options
  * @returns {import('@/types').Sketch}
@@ -42,6 +45,7 @@ export function createDeathLogo ({
   carve = 2,
   density = 1,
   curliness = 1,
+  thornStyle = 'shaped',
   seed = 666,
   regrow = 0,
 }) {
@@ -445,7 +449,7 @@ export function createDeathLogo ({
     }
 
     // `bend` changes the curl every step, so branches hook and S-curve
-    for (let i = 0; i < 70 * scale; i++) {
+    for (let i = 0; i < 70 * scale && thornStyle === 'hair'; i++) {
       const f = fromTip()
       const lean = outward(f.x)
       let bias = Math.atan2(f.ny, f.nx)
@@ -466,7 +470,7 @@ export function createDeathLogo ({
 
     // Stroke ends extended into straight spikes along their own angle
     const vertical = tips.filter(f => Math.abs(f.ny) > 0.6)
-    for (let i = 0; i < 16 * scale && vertical.length > 0; i++) {
+    for (let i = 0; i < 16 * scale && vertical.length > 0 && thornStyle === 'hair'; i++) {
       const f = pick(vertical)
       add(f, {
         angle: aim(f, Math.sign(f.ny) * HALF_PI, 0.5),
@@ -551,6 +555,36 @@ export function createDeathLogo ({
       })
     }
 
+    // Shaped thorns: curved, slim, branching, grown from thick spots
+    if (thornStyle === 'shaped') {
+      const flips = quad ? [[true, false], [false, true], [true, true]] : [[true, false]]
+      // Mirrored copies snap onto the nearest real edge, or the thorn is skipped
+      const mirror = f => {
+        const copies = [{ fx: false, fy: false, ox: 0, oy: 0 }]
+        for (const [fx, fy] of flips) {
+          const ex = fx ? s.width - f.x : f.x
+          const ey = fy ? 2 * l.cy - f.y : f.y
+          const snap = nearestEdge(edges, ex, ey)
+          if (!snap || snap.d > l.size * 0.5) {
+            return null
+          }
+          copies.push({ fx, fy, ox: snap.x - ex, oy: snap.y - ey })
+        }
+        return copies
+      }
+      branches.push(...growThorns({
+        rand,
+        solid: edges.solid,
+        size: l.size,
+        centre: [l.cx, l.cy],
+        halfWidth: l.cx - Math.min(...edges.all.map(p => p.x)),
+        symmetry: quad ? 'xy' : 'x',
+        mirror,
+        sites: features(s, l, edges, 500),
+        density,
+      }))
+    }
+
     return branches
   }
 
@@ -607,16 +641,63 @@ export function createDeathLogo ({
     return alive
   }
 
+  // Shaped thorns grow outward from their base: the full shape is drawn
+  // through a widening circle. Specks pop in once their thorn is done.
+  function paintItem (ctx, s, it) {
+    if (it.delay > 0) {
+      it.delay--
+      return true
+    }
+    const cy = s.logo.cy
+    const tx = (c, [x, y]) => [(c.fx ? s.width - x : x) + c.ox, (c.fy ? 2 * cy - y : y) + c.oy]
+    if (it.kind === 'speck') {
+      ctx.beginPath()
+      for (const c of it.copies) {
+        const [x, y] = tx(c, it.centre)
+        ctx.moveTo(x + it.r, y)
+        ctx.arc(x, y, it.r, 0, Math.PI * 2)
+      }
+      ctx.fill()
+      return false
+    }
+    it.progress = Math.min(1, it.progress + 1 / it.dur)
+    const r = it.reach * it.progress
+    ctx.save()
+    ctx.beginPath()
+    for (const c of it.copies) {
+      const [x, y] = tx(c, it.origin)
+      ctx.moveTo(x + r, y)
+      ctx.arc(x, y, r, 0, Math.PI * 2)
+    }
+    ctx.clip()
+    ctx.beginPath()
+    for (const c of it.copies) {
+      ctx.moveTo(...tx(c, it.B))
+      ctx.bezierCurveTo(...tx(c, it.fin.c1), ...tx(c, it.fin.c2), ...tx(c, it.C))
+      ctx.bezierCurveTo(...tx(c, it.fout.c1), ...tx(c, it.fout.c2), ...tx(c, it.D))
+      ctx.closePath()
+    }
+    ctx.fill()
+    ctx.restore()
+    return it.progress < 1
+  }
+
   function grow (ctx, s) {
     const rand = s.rand
     const unit = s.logo.size / 100
     const next = []
 
     for (const b of s.branches) {
+      if (b.kind === 'shape' || b.kind === 'speck') {
+        if (paintItem(ctx, s, b)) {
+          next.push(b)
+        }
+        continue
+      }
       const alive = step(ctx, s, b)
 
       // Side thorns that hook back like claws, rooted on the parent ribbon
-      if (b.thorns && b.width > unit * 1.5 && rand() < (blades ? 0.05 : 0.09) * density) {
+      if (thornStyle === 'hair' && b.thorns && b.width > unit * 1.5 && rand() < (blades ? 0.05 : 0.09) * density) {
         const side = rand() < 0.5 ? -1 : 1
         next.push({
           ...b,

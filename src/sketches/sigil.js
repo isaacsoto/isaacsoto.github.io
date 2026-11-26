@@ -14,6 +14,7 @@ export default {
   description: 'Rotating star polygons with a failing signal. Move the mouse to pull it apart.',
   tags: ['canvas', 'geometry'],
   order: 2,
+  hidden: true,
 
   draw (ctx, s) {
     const { width: w, height: h, time: t } = s

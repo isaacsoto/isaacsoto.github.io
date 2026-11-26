@@ -1,18 +1,21 @@
 <script setup lang="ts">
+  import type { Sketch } from '@/types'
   import { ref } from 'vue'
   import ash from '@/background/ash'
   import { useSketch } from '@/composables/useSketch'
 
+  const props = withDefaults(defineProps<{ sketch?: Sketch }>(), { sketch: () => ash })
+
   const canvas = ref<HTMLCanvasElement>()
-  useSketch(canvas, ash)
+  useSketch(canvas, props.sketch)
 </script>
 
 <template>
-  <canvas ref="canvas" aria-hidden="true" class="ash-field" />
+  <canvas ref="canvas" aria-hidden="true" class="background-field" />
 </template>
 
 <style scoped>
-  .ash-field {
+  .background-field {
     position: fixed;
     inset: 0;
     width: 100%;

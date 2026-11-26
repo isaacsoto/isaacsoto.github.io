@@ -1,23 +1,20 @@
 <script setup lang="ts">
   import { mdiChevronDown } from '@mdi/js'
-  import { useDisplay } from 'vuetify'
-  import AshField from '@/components/AshField.vue'
-  import DeathLogo from '@/components/DeathLogo.vue'
+  import BackgroundField from '@/components/BackgroundField.vue'
+  import HeroInitial from '@/components/HeroInitial.vue'
   import StageStrip from '@/components/StageStrip.vue'
   import TourDates from '@/components/TourDates.vue'
   import WorkCard from '@/components/WorkCard.vue'
   import { profile } from '@/data/profile'
   import { works } from '@/data/works'
-  import { stacked, wide } from '@/sketches/wordmark'
 
-  const { xs } = useDisplay()
   const nav = ['works', 'tour', 'about', 'contact']
   const year = new Date().getFullYear()
 </script>
 
 <template>
   <v-app>
-    <AshField />
+    <BackgroundField />
     <div aria-hidden="true" class="grain" />
 
     <v-app-bar class="app-bar" color="transparent" density="comfortable" flat>
@@ -40,14 +37,7 @@
 
     <v-main class="main">
       <section id="top" class="hero">
-        <DeathLogo
-          v-if="xs"
-          key="stacked"
-          :aspect="1"
-          :options="stacked"
-        />
-
-        <DeathLogo v-else key="wide" :options="wide" />
+        <HeroInitial :name="profile.name" />
         <p class="hero__tagline">{{ profile.tagline }}</p>
 
         <v-btn

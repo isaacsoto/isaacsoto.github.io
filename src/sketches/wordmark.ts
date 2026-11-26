@@ -10,6 +10,7 @@ export const wide: LogoOptions = {
   curliness: 0.4,
 }
 
+// Two-line variant, hidden for now: not shown anywhere until it's used again
 export const stacked: LogoOptions = {
   lines: profile.name.split(' '),
   font: '"Manufacturing Consent"',
@@ -25,10 +26,10 @@ export const stacked: LogoOptions = {
 
 const wordmark: SketchModule = {
   title: 'Wordmark',
-  description: 'Stacked logo variant: fanned blade letters, horns and tails grown from the letterforms. Regrows with a new seed.',
+  description: 'Generative logo: shaped thorns, horns and arches grown out of the letterforms. Regrows with a new seed.',
   tags: ['canvas', 'generative', 'type'],
   order: 0,
-  ...createDeathLogo({ ...stacked, regrow: 3 }),
+  ...createDeathLogo({ ...wide, regrow: 3 }),
 }
 
 export default wordmark

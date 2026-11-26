@@ -19,6 +19,7 @@ export default {
   description: 'Flow field trails spreading like decay, then wiped and regrown.',
   tags: ['canvas', 'flow field'],
   order: 3,
+  hidden: true,
   setup,
 
   draw (ctx, s) {

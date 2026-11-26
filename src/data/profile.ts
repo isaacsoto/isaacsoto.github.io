@@ -9,7 +9,7 @@ export const profile: Profile = {
   handle: 'isaacsoto',
   tagline: 'Extended range developer',
   about: [
-    'I write code that makes images, motion and noise. Algorithms tuned low, drop-tuned and distorted.',
+    'I synthesize code from downtuned riffs, development that extends to design, music and visuals',
   ],
   tools: ['Typescript', 'Vue', 'Angular', 'p5.js', 'Playwright', 'C++', 'JUCE', 'Java', 'Processing'],
   // Logos are single-colour SVGs (fill="currentColor"), tinted by CSS.

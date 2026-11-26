@@ -8,6 +8,7 @@ export default {
   description: 'Ridgelines pulsing at breakdown tempo.',
   tags: ['canvas', 'noise'],
   order: 1,
+  hidden: true,
 
   setup (ctx, s) {
     s.noise = createNoise(13)
